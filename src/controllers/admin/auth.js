@@ -5,8 +5,9 @@ exports.signup = (req, res) => {
     if (user) {
       return res.status(400).json({ message: "Admin already exits" });
     }
-    const { name, username, email, contactNumber, password } = req.body;
+    const { _id, name, username, email, contactNumber, password } = req.body;
     const _user = new User({
+      _id,
       name,
       username,
       email,
@@ -17,7 +18,8 @@ exports.signup = (req, res) => {
     _user.save((error, data) => {
       if (error) {
         return res.status(400).json({ message: "Something went wrong" });
-      } else {
+      }
+      if (data) {
         return res.status(201).json({ message: "Admin created successfully" });
       }
     });

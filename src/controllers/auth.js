@@ -8,12 +8,20 @@ exports.signup = (req, res) => {
     if (user) {
       return res.status(400).json({ message: "User already exits" });
     }
-    const { name, username, email, contactNumber, password } = req.body;
-    const _user = new User({ name, username, email, contactNumber, password });
+    const { _id, name, username, email, contactNumber, password } = req.body;
+    const _user = new User({
+      _id,
+      name,
+      username,
+      email,
+      contactNumber,
+      password,
+    });
     _user.save((error, data) => {
       if (error) {
         return res.status(400).json({ message: "Something went wrong" });
-      } else {
+      }
+      if (data) {
         return res.status(201).json({ message: "User created successfully" });
       }
     });
