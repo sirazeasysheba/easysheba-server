@@ -12,6 +12,8 @@ app.use(cors());
 const authRoutes = require("./routes/auth");
 const adminRoutes = require("./routes/admin/auth");
 const categoryRoutes = require("./routes/category");
+const productRoutes = require("./routes/product");
+const initialDataRoutes = require("./routes/admin/initialData");
 //Database Connection
 
 const url = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.dzfwj.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
@@ -29,6 +31,8 @@ app.use("/public", express.static(path.join(__dirname, "uploads")));
 app.use("/api", authRoutes);
 app.use("/api", adminRoutes);
 app.use("/api", categoryRoutes);
+app.use("/api", productRoutes);
+app.use("/api", initialDataRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log("Listening");
