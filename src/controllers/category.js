@@ -14,7 +14,9 @@ const createCategories = (categories, parentId = null) => {
       _id: cate._id,
       name: cate.name,
       slug: cate.slug,
+      categoryImage: cate.categoryImage,
       parentId: cate.parentId,
+      type: cate.type,
       children: createCategories(categories, cate._id),
     });
   }
