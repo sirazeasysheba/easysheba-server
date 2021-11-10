@@ -15,6 +15,8 @@ const categoryRoutes = require("./routes/category");
 const productRoutes = require("./routes/product");
 const initialDataRoutes = require("./routes/admin/initialData");
 const cartRoutes = require("./routes/cart");
+const subProductRoutes = require("./routes/sub-product");
+const serviceRoutes = require("./routes/service");
 //Database Connection
 
 const url = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.dzfwj.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
@@ -35,7 +37,8 @@ app.use("/api", categoryRoutes);
 app.use("/api", productRoutes);
 app.use("/api", initialDataRoutes);
 app.use("/api", cartRoutes);
-
+app.use("/api", subProductRoutes);
+app.use("/api", serviceRoutes);
 app.listen(process.env.PORT, () => {
   console.log("Listening");
 });

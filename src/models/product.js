@@ -11,15 +11,22 @@ const productSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    price: {
-      type: Number,
+    priceRange: {
+      type: String,
       required: true,
-    },
-    quantity: {
-      type: Number,
-      required: true,
+      trim: true,
     },
     description: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    information: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    note: {
       type: String,
       required: true,
       trim: true,
@@ -27,17 +34,30 @@ const productSchema = new mongoose.Schema(
     offer: {
       type: Number,
     },
-    optionsTitle: {
-      type: String,
-    },
-    options: {
-      type: String,
-    },
     productPictures: [
       {
         img: {
           type: String,
         },
+      },
+    ],
+    children: [
+      {
+        productName: {
+          type: String,
+          required: true,
+          trim: true,
+        },
+        price: {
+          type: Number,
+          default: 1,
+        },
+        details: {
+          type: String,
+          // required: true,
+          // trim: true,
+        },
+        serviceImage: { type: String },
       },
     ],
     reviews: [

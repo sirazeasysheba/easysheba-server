@@ -39,7 +39,7 @@ exports.signin = (req, res) => {
           { _id: user._id, role: user.role },
           process.env.JWT_TOKEN,
           {
-            expiresIn: "1d",
+            expiresIn: "7d",
           }
         );
         const { _id, name, username, email, role, contactNumber } = user;
@@ -55,10 +55,10 @@ exports.signin = (req, res) => {
           },
         });
       } else {
-        return res.status(400).json({ message: "Invalid password" });
+        return res.status(400).json({ message: "Invalid password!" });
       }
     } else {
-      return res.status(400).json({ message: "Something went wrong!!!" });
+      return res.status(400).json({ message: "Invalid Email!" });
     }
   });
 };
