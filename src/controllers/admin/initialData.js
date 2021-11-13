@@ -36,6 +36,10 @@ const createServices = (services, parentId = null) => {
       _id: serve._id,
       name: serve.name,
       slug: serve.slug,
+      priceRange: serve.priceRange,
+      information: serve.information,
+      details: serve.details,
+      rating: serve.rating,
       serviceImage: serve.categoryImage,
       parentId: serve.parentId,
       category: serve.category,
@@ -48,10 +52,8 @@ const createServices = (services, parentId = null) => {
 exports.initialData = async (req, res) => {
   const categories = await Category.find({}).exec();
   const products = await Product.find({})
-    .select(
-      "_id name priceRange category children slug description information productPictures"
-    )
-    .populate({ path: "category", select: "_id name" })
+    .select("_id name price type")
+    .populate({ path: "service", select: "_id name" })
     .exec();
   const services = await Service.find({})
     .populate({ path: "category", select: "_id name" })

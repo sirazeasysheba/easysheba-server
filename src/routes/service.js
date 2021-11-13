@@ -5,7 +5,12 @@ const router = express.Router();
 const multer = require("multer");
 const shortId = require("shortid");
 const path = require("path");
-const { addService, getServices } = require("../controllers/service");
+const {
+  addService,
+  getServices,
+  updateServices,
+  deleteServices,
+} = require("../controllers/service");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -28,10 +33,6 @@ router.post(
 );
 
 router.get("/service/getservice", getServices);
-// router.post(
-//   "/category/update",
-//   upload.array("categoryImage"),
-//   updateCategories
-// );
-// router.post("/category/delete", deleteCategories);
+router.post("/service/update", upload.array("serviceImage"), updateServices);
+router.post("/service/delete", deleteServices);
 module.exports = router;

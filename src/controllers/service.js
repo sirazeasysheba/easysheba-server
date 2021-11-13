@@ -15,6 +15,10 @@ const createServices = (services, parentId = null) => {
       _id: serve._id,
       name: serve.name,
       slug: serve.slug,
+      information: serve.information,
+      priceRange: serve.priceRange,
+      details: serve.details,
+      rating: serve.rating,
       serviceImage: serve.categoryImage,
       parentId: serve.parentId,
       category: serve.category,
@@ -29,6 +33,10 @@ exports.addService = (req, res) => {
     name: req.body.name,
     category: req.body.category,
     slug: `${slugify(req.body.name)}-${shortid.generate()}`,
+    information: req.body.information,
+    priceRange: req.body.priceRange,
+    details: req.body.details,
+    rating: req.body.rating,
   };
   if (req.file) {
     serviceObj.serviceImage = process.env.API + "/public/" + req.file.filename;
@@ -59,50 +67,68 @@ exports.getServices = (req, res) => {
   });
 };
 
-// exports.updateCategories = async (req, res) => {
-//   const { _id, name, parentId, type } = req.body;
-//   const updatedCategories = [];
-//   if (name instanceof Array) {
-//     for (let i = 0; i < name.length; i++) {
-//       const category = {
-//         name: name[i],
-//         type: type[i],
-//       };
-//       if (parentId[i] !== "") {
-//         category.parentId = parentId[i];
-//       }
-//       const updatedCategory = await Category.findOneAndUpdate(
-//         { _id: _id[i] },
-//         category,
-//         { new: true }
-//       );
-//       updatedCategories.push(updatedCategory);
-//     }
-//     return res.status(201).json({ updatedCategories });
-//   } else {
-//     const category = {
-//       name,
-//       type,
-//     };
-//     if (parentId !== "") {
-//       category.parentId = parentId;
-//     }
-//     const updatedCategory = await Category.findOneAndUpdate({ _id }, category, {
-//       new: true,
-//     });
-//     return res.status(201).json({ updatedCategory });
-//   }
-// };
-// exports.deleteCategories = async (req, res) => {
-//   const { ids } = req.body.payload;
-//   const deletedCategories = [];
-//   for (let i = 0; i < ids.length; i++) {
-//     const deleteCategory = await Category.findOneAndDelete({ _id: ids[i]._id });
-//     deletedCategories.push(deleteCategory);
-//   }
-//   if (deletedCategories.length === ids.length) {
-//     res.status(201).json({ message: "Categories Removed" });
-//   } else {
-//     res.status(400).json({ message: "Something went wrong!!" });
-//   }
-// };
+exports.updateServices = async (req, res) => {
+  const {
+    _id,
+    name,
+    parentId,
+    information,
+    details,
+    rating,
+    category,
+    priceRange,
+  } = req.body;
+
+  const updatedServices = [];
+  if (name instanceof Array) {
+    for (let i = 0; i < name.length; i++) {
+      const service = {
+        name: name[i],
+        information: information[i],
+        details: details[i],
+        rating: rating[i],
+        category: category[i],
+        priceRange: priceRange[i],
+      };
+      if (parentId[i] !== "") {
+        service.parentId = parentId[i];
+      }
+      const updatedService = await Service.findOneAndUpdate(
+        { _id: _id[i] },
+        service,
+        { new: true }
+      );
+      updatedServices.push(updatedService);
+    }
+    return res.status(201).json({ updatedServices });
+  } else {
+    const service = {
+      name,
+      information,
+      details,
+      rating,
+      category,
+      priceRange,
+    };
+    if (parentId !== "") {
+      service.parentId = parentId;
+    }
+    const updatedService = await Service.findOneAndUpdate({ _id }, service, {
+      new: true,
+    });
+    return res.status(201).json({ updatedService });
+  }
+};
+exports.deleteServices = async (req, res) => {
+  const { ids } = req.body.payload;
+  const deletedServices = [];
+  for (let i = 0; i < ids.length; i++) {
+    const deleteService = await Service.findOneAndDelete({ _id: ids[i]._id });
+    deletedServices.push(deleteService);
+  }
+  if (deletedServices.length === ids.length) {
+    res.status(201).json({ message: "Services Removed" });
+  } else {
+    res.status(400).json({ message: "Something went wrong!!" });
+  }
+};

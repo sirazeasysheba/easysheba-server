@@ -1,36 +1,14 @@
 const Product = require("../models/product");
-const slugify = require("slugify");
-const shortId = require("shortid");
-const Category = require("../models/category");
+const Service = require("../models/service");
 
 exports.createProduct = (req, res) => {
-  const {
-    name,
-    priceRange,
-    description,
-    children,
-    category,
-    information,
-    note,
-  } = req.body;
-  let productPictures = [];
-  if (req.files.length > 0) {
-    productPictures = req.files.map((file) => {
-      return { img: file.filename };
-    });
-  }
   const product = new Product({
     name: req.body.name,
-    slug: slugify(name),
-    priceRange,
-    description,
-    information,
-    children,
-    note,
-    productPictures,
-    category,
+    price: req.body.price,
+    service: req.body.service,
     createdBy: req.user._id,
   });
+  console.log(product);
   product.save((error, product) => {
     if (error) {
       res.status(400).json({ error });
@@ -41,40 +19,49 @@ exports.createProduct = (req, res) => {
   });
 };
 
-exports.getProductsBySlug = (req, res) => {
-  const { slug } = req.params;
-  Category.findOne({ slug: slug })
+exports.getProductsByService = (req, res) => {
+  const { service } = req.body;
+  Service.findOne({ service: service })
     .select("_id")
-    .exec((error, category) => {
+    .exec((error, service) => {
       if (error) {
         return res.status(400).json({ error });
       }
-      if (category) {
-        Product.find({ category: category._id }).exec((error, products) => {
+      if (service) {
+        Product.find({ service: service._id }).exec((error, products) => {
           if (error) {
             return res.status(400).json({ error });
           }
           if (products.length > 0) {
             res.status(200).json({
               products,
-              // productsByPrice: {
-              //   under5K: products.filter((product) => product.price <= 5000),
-              //   under10K: products.filter(
-              //     (product) => product.price > 5000 && product.price <= 10000
-              //   ),
-              //   under15K: products.filter(
-              //     (product) => product.price > 10000 && product.price <= 15000
-              //   ),
-              //   under20K: products.filter(
-              //     (product) => product.price > 15000 && product.price <= 20000
-              //   ),
-              //   under30K: products.filter(
-              //     (product) => product.price > 20000 && product.price <= 30000
-              //   ),
-              // },
             });
           }
         });
       }
     });
+};
+
+exports.updateProduct = async (req, res) => {
+  const { _id, name, price } = req.body;
+  console.log(req.body);
+  const product = {
+    name,
+    price,
+  };
+  const updatedProduct = await Product.findOneAndUpdate({ _id }, product, {
+    new: true,
+  });
+  return res.status(201).json({ updatedProduct });
+};
+
+exports.deleteProduct = async (req, res) => {
+  const { id } = req.body.payload;
+  const deleteProduct = await Product.findOneAndDelete(id, function (error) {
+    if (error) {
+      res.status(400).json({ message: "Something went wrong!!" });
+    } else {
+      res.status(201).json({ message: "Services Removed" });
+    }
+  });
 };
