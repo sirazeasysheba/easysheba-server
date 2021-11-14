@@ -13,4 +13,5 @@ router.post("/product/create", requireSignIn, adminMiddleware, createProduct);
 // router.get("/products/:slug", getProductsBySlug);
 router.post("/product/delete", requireSignIn, adminMiddleware, deleteProduct);
 router.post("/product/update", requireSignIn, adminMiddleware, updateProduct);
+
 module.exports = router;

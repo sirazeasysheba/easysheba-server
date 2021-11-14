@@ -51,8 +51,14 @@ exports.updateProduct = async (req, res) => {
   };
   const updatedProduct = await Product.findOneAndUpdate({ _id }, product, {
     new: true,
+  }).exec((error, updatedProduct) => {
+    if (error) {
+      res.status(400).json({ error });
+    }
+    if (updatedProduct) {
+      res.status(201).json({ updatedProduct });
+    }
   });
-  return res.status(201).json({ updatedProduct });
 };
 
 exports.deleteProduct = async (req, res) => {
