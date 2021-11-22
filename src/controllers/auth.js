@@ -66,3 +66,25 @@ exports.signout = (req, res) => {
   res.clearCookie("token");
   return res.status(200).json({ message: "Sign out Successfully" });
 };
+
+exports.update = async (req, res) => {
+  const { _id, name, email, contactNumber, username, address } = req.body;
+  // console.log(req.body);
+  const user = {
+    name,
+    email,
+    contactNumber,
+    username,
+    address,
+  };
+  const updatedUser = await User.findOneAndUpdate({ _id }, user, {
+    new: true,
+  }).exec((error, updatedUser) => {
+    if (error) {
+      res.status(400).json({ error });
+    }
+    if (updatedUser) {
+      res.status(201).json({ updatedUser });
+    }
+  });
+};

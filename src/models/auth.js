@@ -40,6 +40,9 @@ const userSchema = mongoose.Schema(
       enum: ["admin", "user"],
       default: "user",
     },
+    address: {
+      type: String,
+    },
     profilePicture: { type: String },
   },
   { timestamps: true }

@@ -19,28 +19,46 @@ exports.createProduct = (req, res) => {
   });
 };
 
-exports.getProductsByService = (req, res) => {
-  const { service } = req.body;
-  Service.findOne({ service: service })
-    .select("_id")
-    .exec((error, service) => {
+exports.getProducts = (req, res) => {
+  Product.find({})
+    .select("_id name price service")
+    .populate({ path: "service", select: "_id name" })
+    .exec((error, products) => {
       if (error) {
         return res.status(400).json({ error });
       }
-      if (service) {
-        Product.find({ service: service._id }).exec((error, products) => {
-          if (error) {
-            return res.status(400).json({ error });
-          }
-          if (products.length > 0) {
-            res.status(200).json({
-              products,
-            });
-          }
-        });
+      if (products) {
+        return res.status(200).json({ products });
       }
     });
 };
+exports.getProductsByService = (req, res) => {
+  const service = req.body.service;
+  console.log(service);
+  Product.find({ service: service })
+    .select("_id name price service")
+    .populate({ path: "service", select: "_id name" })
+    .exec((error, products) => {
+      if (error) {
+        res.status(400).json({ error });
+      }
+      if (products) {
+        res.status(200).json({ products });
+      }
+    });
+};
+//       Product.find({ service: service._id }).exec((error, products) => {
+//         if (error) {
+//           return res.status(400).json({ error });
+//         }
+//         if (products.length > 0) {
+//           res.status(200).json({
+//             products,
+//           });
+//         }
+//       });
+//     }
+//   });
 
 exports.updateProduct = async (req, res) => {
   const { _id, name, price } = req.body;

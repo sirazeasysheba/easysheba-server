@@ -26,7 +26,7 @@ const createCategories = (categories, parentId = null) => {
 exports.addCategory = (req, res) => {
   const categoryObj = {
     name: req.body.name,
-    slug: `${slugify(req.body.name)}-${shortid.generate()}`,
+    slug: slugify(req.body.name).toLowerCase(),
   };
   if (req.file) {
     categoryObj.categoryImage =

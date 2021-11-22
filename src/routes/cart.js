@@ -1,6 +1,6 @@
 const express = require("express");
 const { requireSignIn, userMiddleware } = require("../common-middleware");
-const { addItemToCart } = require("../controllers/cart");
+const { addItemToCart, getCartItems } = require("../controllers/cart");
 const router = express.Router();
 
 //const { addCategory, getCategories } = require("../controllers/category");
@@ -12,4 +12,11 @@ router.post(
   userMiddleware,
   addItemToCart
 );
+router.post(
+  "/user/cart/getcartitems",
+  requireSignIn,
+  userMiddleware,
+  getCartItems
+);
+
 module.exports = router;
