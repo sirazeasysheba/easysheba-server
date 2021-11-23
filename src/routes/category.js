@@ -23,6 +23,7 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage,
 });
+
 //Routes
 router.post(
   "/category/create",

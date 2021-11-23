@@ -75,6 +75,7 @@ exports.getCartItems = (req, res) => {
             _id: item.product._id.toString(),
             name: item.product.name,
             price: item.product.price,
+            service: item.product.service,
             qty: item.quantity,
           };
         });
