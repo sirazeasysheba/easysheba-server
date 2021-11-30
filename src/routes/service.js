@@ -36,3 +36,4 @@ router.get("/service/getservice", getServices);
 router.post("/service/update", upload.array("serviceImage"), updateServices);
 router.post("/service/delete", deleteServices);
 module.exports = router;
+ 

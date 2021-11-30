@@ -7,18 +7,24 @@ const path = require("path");
 const app = express();
 app.use(express.json());
 env.config();
-app.use(cors());
+const corsConfig = {
+  origin: "*",
+  method: "GET, PUT, PATCH, DELETE, HEAD, POST",
+  credentials: true,
+  exposeHeader: ["x-auth-token"],
+};
+app.use(cors(corsConfig));
 
-const authRoutes = require("./routes/auth");
-const adminRoutes = require("./routes/admin/auth");
-const categoryRoutes = require("./routes/category");
-const productRoutes = require("./routes/product");
-const initialDataRoutes = require("./routes/admin/initialData");
-const cartRoutes = require("./routes/cart");
-const subProductRoutes = require("./routes/sub-product");
-const serviceRoutes = require("./routes/service");
-const addressRoutes = require("./routes/address");
-const orderRoutes = require("./routes/order");
+const authRoutes = require("./src/routes/auth");
+const adminRoutes = require("./src/routes/admin/auth");
+const categoryRoutes = require("./src/routes/category");
+const productRoutes = require("./src/routes/product");
+const initialDataRoutes = require("./src/routes/admin/initialData");
+const cartRoutes = require("./src/routes/cart");
+const subProductRoutes = require("./src/routes/sub-product");
+const serviceRoutes = require("./src/routes/service");
+const addressRoutes = require("./src/routes/address");
+const orderRoutes = require("./src/routes/order");
 //Database Connection
 
 const url = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.dzfwj.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
@@ -32,7 +38,7 @@ mongoose
   });
 
 //API
-app.use("/public", express.static(path.join(__dirname, "uploads")));
+app.use("/public", express.static(path.join(__dirname, "src/uploads")));
 app.use("/api", authRoutes);
 app.use("/api", adminRoutes);
 app.use("/api", categoryRoutes);
@@ -43,6 +49,7 @@ app.use("/api", subProductRoutes);
 app.use("/api", serviceRoutes);
 app.use("/api", addressRoutes);
 app.use("/api", orderRoutes);
+
 app.listen(process.env.PORT, () => {
   console.log("Listening");
 });
