@@ -81,11 +81,15 @@ exports.updateProduct = async (req, res) => {
 
 exports.deleteProduct = async (req, res) => {
   const { id } = req.body.payload;
-  const deleteProduct = await Product.findOneAndDelete(id, function (error) {
-    if (error) {
-      res.status(400).json({ message: "Something went wrong!!" });
-    } else {
-      res.status(201).json({ message: "Services Removed" });
+  console.log(id);
+  const deleteProduct = await Product.findOneAndDelete(
+    { _id: id },
+    function (error) {
+      if (error) {
+        res.status(400).json({ message: "Something went wrong!!" });
+      } else {
+        res.status(201).json({ message: "Services Removed" });
+      }
     }
-  });
+  );
 };
