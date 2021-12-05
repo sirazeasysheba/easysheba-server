@@ -53,7 +53,7 @@ const createServices = (services, parentId = null) => {
 exports.initialData = async (req, res) => {
   const categories = await Category.find({}).exec();
   const products = await Product.find({})
-    .select("_id name price type")
+    .select("_id name price type info")
     .populate({ path: "service", select: "_id name" })
     .exec();
   const services = await Service.find({})

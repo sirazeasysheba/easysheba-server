@@ -6,6 +6,7 @@ exports.createProduct = (req, res) => {
     name: req.body.name,
     price: req.body.price,
     service: req.body.service,
+    info: req.body.info,
     createdBy: req.user._id,
   });
   console.log(product);
@@ -21,7 +22,7 @@ exports.createProduct = (req, res) => {
 
 exports.getProducts = (req, res) => {
   Product.find({})
-    .select("_id name price service")
+    .select("_id name price service info")
     .populate({ path: "service", select: "_id name" })
     .exec((error, products) => {
       if (error) {

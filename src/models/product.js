@@ -11,6 +11,10 @@ const productSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    info: {
+      type: String,
+      trim: true,
+    },
     service: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Service",

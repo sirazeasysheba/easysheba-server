@@ -3,6 +3,7 @@ const Cart = require("../models/cart");
 const Address = require("../models/address");
 
 exports.addOrder = (req, res) => {
+  const num = Math.random().toString().substr(2, 6);
   Cart.deleteOne({ user: req.user._id }).exec((error, result) => {
     if (error) return res.status(400).json({ error });
     if (result) {
@@ -26,6 +27,7 @@ exports.addOrder = (req, res) => {
           isCompleted: false,
         },
       ];
+      req.body.id = `E-${num}`;
       console.log(req.body);
       const order = new Order(req.body);
       order.save((error, order) => {
@@ -40,8 +42,7 @@ exports.addOrder = (req, res) => {
 
 exports.getOrders = (req, res) => {
   Order.find({ user: req.user._id })
-    .select("_id paymentStatus paymentType orderStatus items")
-    .populate("items.productId", "_id name productPictures")
+    .populate("items.productId", "_id name")
     .exec((error, orders) => {
       if (error) return res.status(400).json({ error });
       if (orders) {
