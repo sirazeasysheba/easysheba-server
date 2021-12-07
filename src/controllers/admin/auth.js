@@ -37,12 +37,12 @@ exports.signin = (req, res) => {
           { _id: user._id, role: user.role },
           process.env.JWT_TOKEN,
           {
-            expiresIn: "1d",
+            expiresIn: "90d",
           }
         );
 
         const { _id, name, username, email, role, contactNumber } = user;
-        res.cookie("token", token, { expiresIn: "1d" });
+        res.cookie("token", token, { expiresIn: "90d" });
         res.status(200).json({
           token,
           user: {

@@ -2,6 +2,8 @@ const Category = require("../../models/category");
 const Product = require("../../models/product");
 const Service = require("../../models/service");
 const User = require("../../models/auth");
+const Order = require("../../models/order");
+const UserAddress = require("../../models/address");
 
 const createCategories = (categories, parentId = null) => {
   const categoryList = [];
@@ -60,10 +62,18 @@ exports.initialData = async (req, res) => {
     .populate({ path: "category", select: "_id name" })
     .exec();
   const users = await User.find({ role: "user" }).exec();
+  const orders = await Order.find({})
+    .populate({ path: "items.productId", select: "name" })
+    // .populate({ path: "user", select: "name " })
+    .exec();
+  const addresses = await UserAddress.find({}).exec();
+  console.log(addresses);
   res.status(200).json({
     categories: createCategories(categories),
     products,
     services: createServices(services),
     users,
+    orders,
+    addresses,
   });
 };

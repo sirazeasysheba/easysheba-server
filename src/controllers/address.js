@@ -49,3 +49,12 @@ exports.getAddress = (req, res) => {
     }
   });
 };
+
+exports.getAllAddresses = (req, res) => {
+  UserAddress.find({}).exec((error, userAddress) => {
+    if (error) return res.status(400).json({ error });
+    if (userAddress) {
+      res.status(200).json({ userAddress });
+    }
+  });
+};

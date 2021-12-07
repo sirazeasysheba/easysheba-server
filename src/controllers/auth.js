@@ -39,7 +39,7 @@ exports.signin = (req, res) => {
           { _id: user._id, role: user.role },
           process.env.JWT_TOKEN,
           {
-            expiresIn: "7d",
+            expiresIn: "90d",
           }
         );
         const { _id, name, username, email, role, contactNumber } = user;
